@@ -2,7 +2,7 @@
   <div class="dark-mode">
     <div class="wrapper">
       <!-- Preloader -->
-      <div
+      <!-- <div
         class="preloader flex-column justify-content-center align-items-center"
       >
         <img
@@ -12,7 +12,7 @@
           height="60"
           width="60"
         />
-      </div>
+      </div> -->
 
       <!-- Navbar -->
       <Navbar />
