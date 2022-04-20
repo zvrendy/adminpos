@@ -25,13 +25,13 @@
         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script> --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
-        <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="bg-light sidebar-mini layout-fixed layout-footer-fixed">
         @inertia
+        <script src="{{ mix('js/app.js') }}" defer></script>
 
-        @env ('local')
+        {{-- @env ('local')
             <script src="http://localhost:3000/browser-sync/browser-sync-client.js"></script>
-        @endenv
+        @endenv --}}
     </body>
 </html>

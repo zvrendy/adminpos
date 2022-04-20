@@ -12,26 +12,56 @@ window.Toast = Swal.mixin({
   }
 })
 
+// // Import modules...
+// import { createApp, h } from 'vue';
+// import { createInertiaApp } from '@inertiajs/inertia-vue3';
+// import { InertiaProgress } from '@inertiajs/progress';
+
+// // Import component...
+// import Multiselect from '@suadelabs/vue3-multiselect';
+
+// const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+
+// createInertiaApp({
+//     title: (title) => `${title} - ${appName}`,
+//     resolve: (name) => require(`./Pages/${name}.vue`),
+//     setup({ el, app, props, plugin }) {
+//         return createApp({ render: () => h(app, {
+//             initialPage: JSON.parse(el.dataset.page),
+//             resolveComponent: (name) => require(`./Pages/${name}`).default,
+//         }), })
+//             .use(plugin)
+//             .mixin({ methods: { route } })
+//             .component('multiselect', Multiselect)
+//             .mount(el);
+//     },
+// });
+
 // Import modules...
 import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/inertia-vue3';
+import { App as InertiaApp, plugin as InertiaPlugin, Head, Link, } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 
-// Import component...
-import Multiselect from '@suadelabs/vue3-multiselect';
+// Import components...
+import Multiselect from '@suadelabs/vue3-multiselect'
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const el = document.getElementById('app');
 
-createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => require(`./Pages/${name}.vue`),
-    setup({ el, app, props, plugin }) {
-        return createApp({ render: () => h(app, props) })
-            .use(plugin)
-            .mixin({ methods: { route } })
-            .component('multiselect', Multiselect)
-            .mount(el);
-    },
-});
+createApp({
+    render: () =>
+        h(InertiaApp, {
+            initialPage: JSON.parse(el.dataset.page),
+            resolveComponent: (name) =>
+            // require(`./Pages/${name}`).default,
+            import(`@/Pages/${name}`).then((module) => module.default),
+        }),
+    })
+    .mixin({ methods: { route } })
+    .use(InertiaPlugin)
+    .component('multiselect', Multiselect)
+    .component('InertiaHead', Head)
+    .component('InertiaLink', Link)
+    .mount(el);
+
 
 InertiaProgress.init({ color: '#4B5563' });
