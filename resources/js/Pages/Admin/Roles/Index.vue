@@ -50,10 +50,10 @@
                                             </td>
                                             <td>{{ role.created_at }}</td>
                                             <td class="text-right">
-                                                <button type="button" class="btn btn-success text-uppercase" style="letter-spacing: 0.1em;" @click="editRole(role)">
+                                                <button type="button" class="btn btn-success text-uppercase" style="letter-spacing: 0.1em;" @click="editModal(role)">
                                                     Edit
                                                 </button>
-                                                <button type="button" class="btn btn-danger text-uppercase ml-1" style="letter-spacing: 0.1em;">
+                                                <button type="button" class="btn btn-danger text-uppercase ml-1" style="letter-spacing: 0.1em;" @click="deleteRole(role)">
                                                     Delete
                                                 </button>
                                             </td>
@@ -74,7 +74,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Create New Role</h4>
+                        <h4 class="modal-title">{{ formTitle }}</h4>
                         <button type="button" class="close" @click="closeModal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -85,7 +85,7 @@
                             </span>
                         </div>
                         <div class="card card-primary">
-                            <form @submit.prevent="createRole">
+                            <form @submit.prevent="checkMode">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="role" class="h4">Role Name</label>
@@ -103,7 +103,7 @@
                                 </div>
                                 <div class="modal-footer justify-content-between">
                                     <button type="button" class="btn btn-danger text-uppercase" style="letter-spacing: 0.1em;" @click="closeModal">Cancel</button>
-                                    <button type="submit" class="btn btn-info text-uppercase" style="letter-spacing: 0.1em;">Save</button>
+                                    <button type="submit" class="btn btn-info text-uppercase" style="letter-spacing: 0.1em;">{{ buttonText }}</button>
                                 </div>
                             </form>
                         </div>
@@ -122,6 +122,8 @@ export default {
     },
     data(){
         return {
+            editedIndex: -1,
+            editMode: false,
             form: this.$inertia.form({
                 id: '',
                 name: '',
@@ -129,6 +131,17 @@ export default {
             }),
             permissionOptions: this.permissions,
         }
+    },
+    computed: {
+        formTitle(){
+            return this.editedIndex === -1 ? 'Create New Role' : 'Edit Role';
+        },
+        buttonText(){
+            return this.editedIndex === -1 ? 'Save' : 'Update';
+        },
+        checkMode(){
+            return this.editMode === false ? this.createRole : this.editRole ;
+        },
     },
     methods: {
         addPermissions(newPermission){
@@ -139,9 +152,22 @@ export default {
             this.form.permissions.push(permission)
         },
         openModal(){
+            this.editMode = false
+            this.form.reset()
+            this.editedIndex = -1
             $('#modal-role').modal('show')
         },
+        editModal(role){
+            this.editMode = true
+            $('#modal-role').modal('show')
+            this.editedIndex = this.roles.indexOf(role)
+            this.form.name = role.name
+            this.form.id = role.id
+            this.form.permissions = role.permissions
+        },
         closeModal(){
+            this.editMode = false
+            this.form.reset()
             $('#modal-role').modal('hide')
         },
         createRole(){
@@ -150,12 +176,40 @@ export default {
                 onSuccess:()=> {
                     this.form.reset()
                     this.closeModal()
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'New Role Inserted!'
+                    })
                 }
             })
         },
-        editRole(role){
-            alert(role.id)
-        }
+        editRole(){
+            this.form.patch(this.route('admin.roles.update', this.form.id, this.form),{
+                preserveScroll: true,
+                onSuccess:()=> {
+                    this.form.reset()
+                    this.closeModal()
+                    Toast.fire({
+                        icon: 'info',
+                        title: 'Update!'
+                    })
+                }
+            })
+        },
+        deleteRole(role){
+            this.form.delete(this.route('admin.roles.destroy', role),{
+                preserveScroll: true,
+                onSuccess:()=> {
+                    this.form.reset()
+                    this.closeModal()
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Delete!'
+                    })
+                }
+            })
+        },
+
     }
 
 }
