@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admins\AdminDashboardController;
-use App\Http\Controllers\Admins\RoleController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\Admins\RoleController;
+use App\Http\Controllers\Admins\PermissionController;
+use App\Http\Controllers\Admins\AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,5 +41,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified'])
         Route::post('/', [RoleController::class, 'store'])->name('store');
         Route::patch('/{role}', [RoleController::class, 'update'])->name('update');
         Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
+    });
+
+    //Route Permission
+    Route::prefix('permissions')->name('permissions.')->group(function(){
+        Route::get('/', [PermissionController::class, 'index'])->name('index');
+        Route::post('/', [PermissionController::class, 'store'])->name('store');
+        Route::patch('/{permission}', [PermissionController::class, 'update'])->name('update');
+        Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
     });
 });

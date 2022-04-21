@@ -59,8 +59,8 @@ createApp({
     .mixin({ methods: { route } })
     .use(InertiaPlugin)
     .component('multiselect', Multiselect)
-    .component('InertiaHead', Head)
-    .component('InertiaLink', Link)
+    .component('inertiahead', Head)
+    .component('inertialink', Link)
     .mount(el);
 
 

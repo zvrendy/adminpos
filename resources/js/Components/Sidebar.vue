@@ -1,7 +1,7 @@
 <template>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <InertiaLink :href="route('admin.dashboard.index')" class="brand-link">
+    <inertialink :href="route('admin.dashboard.index')" class="brand-link">
       <img
         :src="'/storage/m_logo.png'"
         alt="Mad Logo"
@@ -9,7 +9,7 @@
         style="opacity: 0.8"
       />
       <span class="brand-text font-weight-light">AdminPOS</span>
-    </InertiaLink>
+    </inertialink>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -38,16 +38,15 @@
           <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <InertiaLink
-              href="route('admin.dashboard.index')"
+            <inertialink
+              :href="route('admin.dashboard.index')"
               class="nav-link active"
             >
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
-                <i class="right fas fa-angle-left"></i>
               </p>
-            </InertiaLink>
+            </inertialink>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -59,40 +58,40 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <InertiaLink href="#" class="nav-link">
+                <inertialink href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admins</p>
-                </InertiaLink>
+                </inertialink>
               </li>
               <li class="nav-item">
-                <InertiaLink href="#" class="nav-link">
+                <inertialink href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Users</p>
-                </InertiaLink>
+                </inertialink>
               </li>
               <li class="nav-item">
-                <InertiaLink
+                <inertialink
                   :href="route('admin.roles.index')"
                   class="nav-link"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles</p>
-                </InertiaLink>
+                </inertialink>
               </li>
               <li class="nav-item">
-                <InertiaLink href="#" class="nav-link">
+                <inertialink :href="route('admin.permissions.index')" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Permissions</p>
-                </InertiaLink>
+                </inertialink>
               </li>
             </ul>
           </li>
           <li class="nav-header">MISC</li>
           <li class="nav-item">
-            <InertiaLink :href="route('dashboard')" class="nav-link">
+            <inertialink :href="route('dashboard')" class="nav-link">
               <i class="nav-icon fas fa-home"></i>
               <p>Site</p>
-            </InertiaLink>
+            </inertialink>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link" role="button">

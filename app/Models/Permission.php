@@ -22,6 +22,10 @@ class Permission extends Model implements PermissionContract
 
     protected $guarded = [];
 
+    protected $casts = [
+        'created_at' => 'datetime:d-m-Y'
+    ];
+
     public function __construct(array $attributes = [])
     {
         $attributes['guard_name'] = $attributes['guard_name'] ?? config('auth.defaults.guard');

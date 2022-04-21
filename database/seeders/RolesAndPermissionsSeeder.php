@@ -43,6 +43,9 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminPermission2 = Permission::create(['name' => 'read:admin', 'description' => 'read admin']);
         $adminPermission1 = Permission::create(['name' => 'update:admin', 'description' => 'update admin']);
 
+        // Misc
+        $miscPermission = Permission::create(['name' => 'N/A', 'description' => 'N/A']);
+
         $superAdminRole = Role::create(['name' => 'super-admin']);
         $adminRole = Role::create(['name' => 'admin']);
         $moderatorRole = Role::create(['name' => 'moderator']);
@@ -93,6 +96,10 @@ class RolesAndPermissionsSeeder extends Seeder
             $adminPermission1,
         ]);
 
+        $userRole->syncPermissions([
+            $miscPermission,
+        ]);
+
         $superAdmin = User::create([
             'name' => 'Super Admin',
             'username' => 'superadmin',
@@ -100,6 +107,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'email' => 'super@admin.com',
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
+            'remember_token' => Str::random(10),
+        ]);
+
+        $superAdmin2 = User::create([
+            'name' => 'Akhmad Efendy Mooduto',
+            'username' => 'madfento',
+            'is_admin' => 1,
+            'email' => 'madfento@admin.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('ma2lia'),
             'remember_token' => Str::random(10),
         ]);
 
@@ -143,50 +160,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        $superAdmin->syncRoles([$superAdminRole])->syncPermissions([
-            $userPermission1,
-            $userPermission2,
-            $userPermission3,
-            $userPermission4,
-            $rolePermission1,
-            $rolePermission2,
-            $rolePermission3,
-            $rolePermission4,
-            $permission1,
-            $permission2,
-            $permission3,
-            $permission4,
-            $adminPermission1,
-            $adminPermission2,
-        ]);
+        $superAdmin->syncRoles([$superAdminRole]);
 
-        $admin->syncRoles([$adminRole])->syncPermissions([
-            $userPermission1,
-            $userPermission2,
-            $userPermission3,
-            $userPermission4,
-            $rolePermission1,
-            $rolePermission2,
-            $rolePermission3,
-            $rolePermission4,
-            $permission1,
-            $permission2,
-            $permission3,
-            $permission4,
-            $adminPermission1,
-            $adminPermission2,
-        ]);
+        $superAdmin2->syncRoles([$superAdminRole]);
 
-        $moderator->syncRoles([$moderatorRole])->syncPermissions([
-            $userPermission2,
-            $rolePermission2,
-            $permission2,
-            $adminPermission1
-        ]);
+        $admin->syncRoles([$adminRole]);
 
-        $developer->syncRoles([$developerRole])->syncPermissions([
-            $adminPermission1
-        ]);
+        $moderator->syncRoles([$moderatorRole]);
+
+        $developer->syncRoles([$developerRole]);
 
         $user->syncRoles($userRole);
     }

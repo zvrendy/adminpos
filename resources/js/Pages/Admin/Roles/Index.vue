@@ -16,7 +16,7 @@
                   <button
                     type="button"
                     class="btn btn-info text-uppercase"
-                    style="letter-spacing: 0.1rem"
+                    style="letter-spacing: 0.1em;"
                     @click="openModal"
                   >
                     Add
@@ -34,7 +34,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(role, index) in roles" :key="index">
+                    <tr v-for="(role, index) in roles.data" :key="index">
                       <td>{{ role.name }}</td>
                       <td>
                         <div class="d-flex flex-column">
@@ -69,7 +69,9 @@
                   </tbody>
                 </table>
               </div>
-              <div class="card-footer clearfix">pagination</div>
+              <div class="card-footer clearfix">
+                  <pagination :links="roles.links"></pagination>
+              </div>
             </div>
           </div>
         </div>
@@ -167,10 +169,12 @@
 </template>
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
+import Pagination from "@/Components/Pagination.vue";
 export default {
   props: ["roles", "permissions"],
   components: {
     AdminLayout,
+    Pagination,
   },
   data() {
     return {
@@ -186,7 +190,7 @@ export default {
   },
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "Create New Role" : "Edit Role";
+      return this.editedIndex === -1 ? "Create New Role" : "Edit " + this.form.name.toUpperCase() + " Role";
     },
     buttonText() {
       return this.editedIndex === -1 ? "Save" : "Update";
@@ -204,6 +208,7 @@ export default {
       this.form.permissions.push(permission);
     },
     openModal() {
+    this.form.clearErrors()
       this.editMode = false;
       this.form.reset();
       this.editedIndex = -1;
@@ -212,12 +217,13 @@ export default {
     editModal(role) {
       this.editMode = true;
       $("#modal-role").modal("show");
-      this.editedIndex = this.roles.indexOf(role);
+      this.editedIndex = this.roles.data.indexOf(role);
       this.form.name = role.name;
       this.form.id = role.id;
       this.form.permissions = role.permissions;
     },
     closeModal() {
+        this.form.clearErrors()
       this.editMode = false;
       this.form.reset();
       $("#modal-role").modal("hide");
@@ -241,12 +247,12 @@ export default {
         {
           preserveScroll: true,
           onSuccess: () => {
+            Toast.fire({
+                icon: "info",
+                title: this.form.name.toUpperCase() + " Updated!",
+            });
             this.form.reset();
             this.closeModal();
-            Toast.fire({
-              icon: "info",
-              title: "Update!",
-            });
           },
         }
       );
