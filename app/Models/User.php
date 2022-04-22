@@ -52,7 +52,10 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at' => 'datetime:d-m-Y'
     ];
+
+
 
     /**
      * The accessors to append to the model's array form.
@@ -62,4 +65,6 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    protected $with = ['roles'];
 }

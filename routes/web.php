@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\Admins\RoleController;
+use App\Http\Controllers\Admins\UserController;
 use App\Http\Controllers\Admins\PermissionController;
 use App\Http\Controllers\Admins\AdminDashboardController;
 
@@ -49,5 +50,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified'])
         Route::post('/', [PermissionController::class, 'store'])->name('store');
         Route::patch('/{permission}', [PermissionController::class, 'update'])->name('update');
         Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
+    });
+
+    //Route User
+    Route::prefix('users')->name('users.')->group(function(){
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        Route::patch('/{user}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 });
