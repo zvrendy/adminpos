@@ -43,9 +43,7 @@
               class="nav-link active"
             >
               <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
+              <p>Dashboard</p>
             </inertialink>
           </li>
           <li class="nav-item">
@@ -58,13 +56,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <inertialink href="#" class="nav-link">
+                <inertialink
+                  :href="route('admin.admins.index')"
+                  class="nav-link"
+                >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admins</p>
                 </inertialink>
               </li>
               <li class="nav-item">
-                <inertialink :href="route('admin.users.index')" class="nav-link">
+                <inertialink
+                  :href="route('admin.users.index')"
+                  class="nav-link"
+                >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Users</p>
                 </inertialink>
@@ -79,7 +83,10 @@
                 </inertialink>
               </li>
               <li class="nav-item">
-                <inertialink :href="route('admin.permissions.index')" class="nav-link">
+                <inertialink
+                  :href="route('admin.permissions.index')"
+                  class="nav-link"
+                >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Permissions</p>
                 </inertialink>
