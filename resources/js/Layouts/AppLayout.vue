@@ -38,6 +38,11 @@
             >
               Dashboard
             </jet-nav-link>
+            <jet-nav-link
+              :href="route('admin.dashboard.index')"
+            >
+              Admin
+            </jet-nav-link>
           </ul>
 
           <!-- Right Side Of Navbar -->

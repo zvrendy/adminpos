@@ -1,8 +1,8 @@
 <template>
   <div class="dark-mode">
-    <div class="wrapper">
+    <div class="wrapper" style="overflow:auto;">
       <!-- Preloader -->
-      <!-- <div
+      <div
         class="preloader flex-column justify-content-center align-items-center"
       >
         <img
@@ -12,7 +12,7 @@
           height="60"
           width="60"
         />
-      </div> -->
+      </div>
 
       <!-- Navbar -->
       <Navbar />
@@ -69,6 +69,9 @@ export default {
     Navbar,
     Footer,
   },
+  mounted(){
+      this.init()
+  },
   methods: {
     init() {
       let SELECTOR_LOADER = ".preloader";
@@ -78,9 +81,9 @@ export default {
           $loader.css("height", 0);
           setTimeout(() => {
             $loader.children().hide();
-          }, 2000);
+          }, 200);
         }
-      }, 2000);
+      }, 1000);
     },
   },
 };

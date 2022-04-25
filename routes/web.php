@@ -34,16 +34,15 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 'role:super-admin|admin|developer|moderator'])->group(function () {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.index');
 
     //Route Admin
-    Route::prefix('admins')->name('admins.')->group(function () {
-        Route::get('/', [AdminController::class, 'index'])->name('index');
-        Route::post('/', [AdminController::class, 'store'])->name('store');
-        Route::patch('/{admin}', [AdminController::class, 'update'])->name('update');
-        Route::delete('/{admin}', [AdminController::class, 'destroy'])->name('destroy');
-    });
+    Route::resource('admins', AdminController::class)->parameters(['admins' => 'user'])->only(['index', 'update']);
+    // Route::prefix('admins')->name('admins.')->group(function () {
+    //     Route::get('/', [AdminController::class, 'index'])->name('index');
+    //     Route::patch('/{user}', [AdminController::class, 'update'])->name('update');
+    // });
 
     //Route Role
     Route::prefix('roles')->name('roles.')->group(function () {

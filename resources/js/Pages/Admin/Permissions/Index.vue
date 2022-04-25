@@ -114,6 +114,7 @@
                                         type="submit"
                                         class="btn btn-info text-uppercase"
                                         style="letter-spacing: 0.1em"
+                                        :disabled="!form.name || !form.description || form.processing"
                                     >
                                         {{ buttonText }}
                                     </button>

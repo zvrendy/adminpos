@@ -1,8 +1,3 @@
-<style>
-.multiselect__content-wrapper {
-  position: relative;
-}
-</style>
 <template>
   <admin-layout>
     <section class="content">
@@ -155,6 +150,7 @@
                     type="submit"
                     class="btn btn-info text-uppercase"
                     style="letter-spacing: 0.1em"
+                    :disabled="!form.name || form.processing"
                   >
                     {{ buttonText }}
                   </button>

@@ -37,18 +37,18 @@
         >
           <!-- Add icons to the links using the .nav-icon class
                         with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
+          <li class="nav-item">
             <inertialink
               :href="route('admin.dashboard.index')"
-              class="nav-link active"
+              class="nav-link" :class="route().current('admin.dashboard.*') ? 'active' : ' '"
             >
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </inertialink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" :class="route().current('admin.admins.*') || route().current('admin.users.*') || route().current('admin.permissions.*') || route().current('admin.roles.*') ? 'active menu-is-opening menu-open' : ' '" >
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
+              <i class="nav-icon fas fa-table" ></i>
               <p>
                 Tables
                 <i class="fas fa-angle-left right"></i>
@@ -58,7 +58,7 @@
               <li class="nav-item">
                 <inertialink
                   :href="route('admin.admins.index')"
-                  class="nav-link"
+                  class="nav-link" :class="route().current('admin.admins.*') ? 'active' : ' '"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admins</p>
@@ -67,7 +67,7 @@
               <li class="nav-item">
                 <inertialink
                   :href="route('admin.users.index')"
-                  class="nav-link"
+                  class="nav-link" :class="route().current('admin.users.*') ? 'active' : ' '"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Users</p>
@@ -76,16 +76,16 @@
               <li class="nav-item">
                 <inertialink
                   :href="route('admin.roles.index')"
-                  class="nav-link"
+                  class="nav-link" :class="route().current('admin.roles.*') ? 'active' : ' '"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles</p>
                 </inertialink>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" v-if="$page.props.auth.hasRole.superAdmin||$page.props.auth.hasRole.admin">
                 <inertialink
                   :href="route('admin.permissions.index')"
-                  class="nav-link"
+                  class="nav-link" :class="route().current('admin.permissions.*') ? 'active' : ' '"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Permissions</p>
@@ -101,10 +101,12 @@
             </inertialink>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" role="button">
-              <i class="nav-icon fas fa-sign-out-alt"></i>
-              <p>Logout</p>
-            </a>
+            <form @submit.prevent="logout" >
+                <button class="nav-button" type="submit">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>Logout</p>
+                </button>
+            </form>
           </li>
         </ul>
       </nav>
@@ -114,5 +116,11 @@
   </aside>
 </template>
 <script>
-export default {};
+export default {
+    methods: {
+        logout(){
+            this.$inertia.post(route("logout"));
+        }
+    }
+};
 </script>

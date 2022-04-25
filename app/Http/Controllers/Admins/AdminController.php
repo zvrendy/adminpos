@@ -106,16 +106,11 @@ class AdminController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // $this->validate($request, [
-        //     'name' => ['required', 'max:50'],
-        //     'username' => ['required', 'max:25'],
-        //     'email' => ['required', 'email']
-        // ]);
-        // if ($request->roles[0] === null) {
-        //     return back()->withErrors(['roles' => 'The Role field is required']);
-        // }
-        if ($request->roles[0]['id'] != 5) {
-            $adminRole = Role::where('id', $request->roles[0]['id'])->first();
+        if (!$request->roles) {
+            return back()->withErrors(['roles' => 'The Role field is required']);
+        }
+        if ($request->roles['id'] != 5) {
+            $adminRole = Role::where('id', $request->roles['id'])->first();
             $user->syncRoles($adminRole);
             return back();
         } else {

@@ -1,8 +1,3 @@
-<style>
-.multiselect__content-wrapper {
-  position: relative;
-}
-</style>
 <template>
   <admin-layout>
     <section class="content">
@@ -28,6 +23,7 @@
                   <thead>
                     <tr>
                       <th class="text-capitalize">Name</th>
+                      <th class="text-capitalize">Username</th>
                       <th class="text-capitalize">Email</th>
                       <th class="text-capitalize">Joined</th>
                       <th class="text-capitalize text-right">Actions</th>
@@ -36,6 +32,7 @@
                   <tbody>
                     <tr v-for="(user, index) in users.data" :key="index">
                       <td>{{ user.name }}</td>
+                      <td>{{ user.username }}</td>
                       <td>{{ user.email }}</td>
                       <td>{{ user.created_at }}</td>
                       <td class="text-right">
@@ -185,6 +182,7 @@
                     type="submit"
                     class="btn btn-info text-uppercase"
                     style="letter-spacing: 0.1em"
+                    :disabled="!form.name || !form.username || !form.email || form.processing"
                   >
                     {{ buttonText }}
                   </button>
