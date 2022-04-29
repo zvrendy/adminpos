@@ -208,7 +208,7 @@ export default {
       $("#modal-admin").modal("hide");
     },
     updateAdmins() {
-      this.form.patch(this.route("admin.admins.update", this.form), {
+      this.form.patch(this.route("admin.setting.admins.update", this.form), {
           preserveScroll: true,
           onSuccess: () => {
             Toast.fire({

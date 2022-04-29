@@ -50,7 +50,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table" ></i>
               <p>
-                Tables
+                Role & Permissions
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -93,6 +93,35 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item" :class="route().current('admin.categories.*')  ? 'active menu-is-opening menu-open' : ' '" >
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table" ></i>
+              <p>
+                Master
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <inertialink
+                  :href="route('admin.categories.index')"
+                  class="nav-link" :class="route().current('admin.categories.*') ? 'active' : ' '"
+                >
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Kategori</p>
+                </inertialink>
+              </li>
+              <li class="nav-item">
+                <inertialink
+                  :href="route('admin.products.index')"
+                  class="nav-link" :class="route().current('admin.products.*') ? 'active' : ' '"
+                >
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Produk</p>
+                </inertialink>
+              </li>
+            </ul>
+          </li>
           <li class="nav-header">MISC</li>
           <li class="nav-item">
             <inertialink :href="route('dashboard')" class="nav-link">
@@ -102,7 +131,7 @@
           </li>
           <li class="nav-item">
             <form @submit.prevent="logout" >
-                <button class="nav-button" type="submit">
+                <button class="nav-link" type="submit">
                     <i class="nav-icon fas fa-sign-out-alt"></i>
                     <p>Logout</p>
                 </button>

@@ -3,9 +3,11 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\Admins\AdminController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admins\RoleController;
 use App\Http\Controllers\Admins\UserController;
+use App\Http\Controllers\Admins\AdminController;
 use App\Http\Controllers\Admins\PermissionController;
 use App\Http\Controllers\Admins\AdminDashboardController;
 
@@ -36,9 +38,13 @@ Route::middleware([
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 'role:super-admin|admin|developer|moderator'])->group(function () {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.index');
+    Route::resource('categories', CategoryController::class)->except(['show']);
+    Route::resource('products', ProductController::class)->except(['show']);
+    Route::prefix('setting')->name('setting.')->group(function() {
 
+    });
     //Route Admin
-    Route::resource('admins', AdminController::class)->parameters(['admins' => 'user'])->only(['index', 'update']);
+    Route::resource('admins', AdminController::class)->parameters(['admins' => 'user'])->middleware(['permission:update:admin'])->only(['index', 'update']);
     // Route::prefix('admins')->name('admins.')->group(function () {
     //     Route::get('/', [AdminController::class, 'index'])->name('index');
     //     Route::patch('/{user}', [AdminController::class, 'update'])->name('update');
