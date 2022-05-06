@@ -14,10 +14,10 @@ class AddRelationshipsToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->integer('customer_id')->unsigned()->change();
+            $table->bigInteger('customer_id')->unsigned()->change();
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->integer('user_id')->unsigned()->change();
+            $table->bigInteger('user_id')->unsigned()->change();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -29,14 +29,13 @@ class AddRelationshipsToOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function(Blueprint $table) {
+        Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign('orders_customer_id_foreign');
             $table->dropIndex('orders_customer_id_foreign');
-            $table->integer('customer_id')->change();
+            $table->bigInteger('customer_id')->change();
             $table->dropForeign('orders_user_id_foreign');
             $table->dropIndex('orders_user_id_foreign');
-            $table->integer('user_id')->change();
+            $table->bigInteger('user_id')->change();
         });
-
     }
 }

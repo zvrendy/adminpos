@@ -40,15 +40,26 @@
           <li class="nav-item">
             <inertialink
               :href="route('admin.dashboard.index')"
-              class="nav-link" :class="route().current('admin.dashboard.*') ? 'active' : ' '"
+              class="nav-link"
+              :class="route().current('admin.dashboard.*') ? 'active' : ' '"
             >
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </inertialink>
           </li>
-          <li class="nav-item" :class="route().current('admin.admins.*') || route().current('admin.users.*') || route().current('admin.permissions.*') || route().current('admin.roles.*') ? 'active menu-is-opening menu-open' : ' '" >
+          <li
+            class="nav-item menu-open"
+            :class="
+              route().current('admin.admins.*') ||
+              route().current('admin.users.*') ||
+              route().current('admin.permissions.*') ||
+              route().current('admin.roles.*')
+                ? 'active menu-is-opening menu-open'
+                : ' '
+            "
+          >
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table" ></i>
+              <i class="nav-icon fas fa-table"></i>
               <p>
                 Role & Permissions
                 <i class="fas fa-angle-left right"></i>
@@ -58,7 +69,8 @@
               <li class="nav-item">
                 <inertialink
                   :href="route('admin.admins.index')"
-                  class="nav-link" :class="route().current('admin.admins.*') ? 'active' : ' '"
+                  class="nav-link"
+                  :class="route().current('admin.admins.*') ? 'active' : ' '"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admins</p>
@@ -67,7 +79,8 @@
               <li class="nav-item">
                 <inertialink
                   :href="route('admin.users.index')"
-                  class="nav-link" :class="route().current('admin.users.*') ? 'active' : ' '"
+                  class="nav-link"
+                  :class="route().current('admin.users.*') ? 'active' : ' '"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Users</p>
@@ -76,16 +89,26 @@
               <li class="nav-item">
                 <inertialink
                   :href="route('admin.roles.index')"
-                  class="nav-link" :class="route().current('admin.roles.*') ? 'active' : ' '"
+                  class="nav-link"
+                  :class="route().current('admin.roles.*') ? 'active' : ' '"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles</p>
                 </inertialink>
               </li>
-              <li class="nav-item" v-if="$page.props.auth.hasRole.superAdmin||$page.props.auth.hasRole.admin">
+              <li
+                class="nav-item"
+                v-if="
+                  $page.props.auth.hasRole.superAdmin ||
+                  $page.props.auth.hasRole.admin
+                "
+              >
                 <inertialink
                   :href="route('admin.permissions.index')"
-                  class="nav-link" :class="route().current('admin.permissions.*') ? 'active' : ' '"
+                  class="nav-link"
+                  :class="
+                    route().current('admin.permissions.*') ? 'active' : ' '
+                  "
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Permissions</p>
@@ -93,9 +116,16 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item" :class="route().current('admin.categories.*')  ? 'active menu-is-opening menu-open' : ' '" >
+          <li
+            class="nav-item"
+            :class="
+              route().current('admin.categories.*')
+                ? 'active menu-is-opening menu-open'
+                : ' '
+            "
+          >
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table" ></i>
+              <i class="nav-icon fas fa-table"></i>
               <p>
                 Master
                 <i class="fas fa-angle-left right"></i>
@@ -105,7 +135,10 @@
               <li class="nav-item">
                 <inertialink
                   :href="route('admin.categories.index')"
-                  class="nav-link" :class="route().current('admin.categories.*') ? 'active' : ' '"
+                  class="nav-link"
+                  :class="
+                    route().current('admin.categories.*') ? 'active' : ' '
+                  "
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Kategori</p>
@@ -114,7 +147,8 @@
               <li class="nav-item">
                 <inertialink
                   :href="route('admin.products.index')"
-                  class="nav-link" :class="route().current('admin.products.*') ? 'active' : ' '"
+                  class="nav-link"
+                  :class="route().current('admin.products.*') ? 'active' : ' '"
                 >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Produk</p>
@@ -130,11 +164,11 @@
             </inertialink>
           </li>
           <li class="nav-item">
-            <form @submit.prevent="logout" >
-                <button class="nav-link" type="submit">
-                    <i class="nav-icon fas fa-sign-out-alt"></i>
-                    <p>Logout</p>
-                </button>
+            <form @submit.prevent="logout">
+              <button class="nav-link" type="submit">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+                <p>Logout</p>
+              </button>
             </form>
           </li>
         </ul>
@@ -146,10 +180,10 @@
 </template>
 <script>
 export default {
-    methods: {
-        logout(){
-            this.$inertia.post(route("logout"));
-        }
-    }
+  methods: {
+    logout() {
+      this.$inertia.post(route("logout"));
+    },
+  },
 };
 </script>

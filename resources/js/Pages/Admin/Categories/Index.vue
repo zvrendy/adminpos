@@ -50,7 +50,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <template v-if="categories.length > 1">
+                                        <template v-if="categories.length > 0">
                                             <tr v-for="category in categories" :key="category.id">
                                                 <td>{{ category.name }}</td>
                                                 <td>{{ category.description }}</td>

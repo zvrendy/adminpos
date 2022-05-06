@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use File;
 use Image;
+use Inertia\Inertia;
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -19,7 +20,7 @@ class ProductController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Products/Index', [
-            'products' => Product::get(),
+            'products' => Product::paginate(5),
             'categories' => Category::all(),
         ]);
     }
@@ -49,14 +50,21 @@ class ProductController extends Controller
             'description' => 'nullable|string|max:100',
             'stock' => 'required|integer',
             'price' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required',
             'photo' => 'nullable|image|mimes:jpg,png,jpeg'
         ]);
+        try {
+            $filename = "default-150x150.png";
+            if ($request->hasFile('photo')) {
+                //MAKA KITA SIMPAN SEMENTARA FILE TERSEBUT KEDALAM VARIABLE FILE
+                $file = $request->file('photo');
+                //KEMUDIAN NAMA FILENYA KITA BUAT CUSTOMER DENGAN PERPADUAN TIME DAN SLUG DARI NAMA PRODUK. ADAPUN EXTENSIONNYA KITA GUNAKAN BAWAAN FILE TERSEBUT
+                $filename = Str::slug($request->name) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                //SIMPAN FILENYA KEDALAM FOLDER PUBLIC/PRODUCTS, DAN PARAMETER KEDUA ADALAH NAMA CUSTOM UNTUK FILE TERSEBUT
+                $file->storeAs('public/products', $filename);
 
-        try{
-            $photo = "default-150x150.png";
-            if ($request->hasFile('photo')){
-                $photo = $this->saveFile($request->name, $request->file('photo'));
+                // $photo = $this->saveFile($request->name, $request->file('photo'));
+                echo $filename;
             }
 
             Product::create([
@@ -65,14 +73,13 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'stock' => $request->stock,
                 'price' => $request->price,
-                'category_id' => $request->category_id,
-                'photo' => $photo
+                'category_id' => $request->categories['id'],
+                'photo' => $filename
             ]);
-
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return back();
         }
-
+        return back();
     }
 
     /**
