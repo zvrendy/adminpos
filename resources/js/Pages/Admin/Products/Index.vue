@@ -56,19 +56,13 @@
                           :src="`/storage/products/${product.photo}`"
                           width="200"
                           height="150"
-                        />
+                        /><br>
                         {{ product.name }}
                       </td>
                       <td>{{ product.stock }}</td>
-                      <td>{{ product.price }}</td>
+                      <td>{{ vueNumberFormat(product.price) }}</td>
                       <td>
-                        <template
-                          :key="category.id"
-                          v-for="category in product.categories"
-                        >
-                          {{ category.name }}
-                        </template>
-                        {{ product.category_id }}
+                           {{ product.category.name }}
                       </td>
                       <td>{{ product.updated_at }}</td>
                       <td class="text-right">
@@ -106,7 +100,7 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Edit {{ formTitle }}</h4>
+            <h4 class="modal-title">{{ formTitle }}</h4>
             <button
               type="button"
               class="close"
@@ -207,7 +201,7 @@
                       :class="{ 'is-invalid': form.errors.price }"
                       autocomplete="off"
                       required="required"
-                    />
+                    >
                   </div>
                   <div
                     class="invalid-feedback mb-3"
@@ -297,11 +291,11 @@ export default {
       editMode: false,
       form: this.$inertia.form({
         id: "",
-        code: "HP-001",
-        name: "Realme 5i",
-        description: "Handphone Realme 5i",
-        stock: "11",
-        price: "1900000",
+        code: "",
+        name: "",
+        description: "",
+        stock: "",
+        price: "",
         photo: "",
         categories: [],
         preview: null,
@@ -326,7 +320,7 @@ export default {
     onFileChange(e) {
       console.log(e.target.files[0]);
       this.form.photo = e.target.files[0];
-      this.preview = URL.createObjectURL(event.target.files[0]);
+      this.preview = URL.createObjectURL(e.target.files[0]);
     },
     addTag(newCategory) {
       let tag = {
@@ -355,60 +349,67 @@ export default {
           this.closeModal();
           Toast.fire({
             icon: "success",
-            title: "New Product",
+            title: "Product " + this.form.name + " ditambahkan",
           });
         },
       });
     },
-    // editForm(category) {
-    //     this.editMode = true;
-    //     this.editedIndex = this.products.indexOf(category);
-    //     this.form.name = category.name;
-    //     this.form.description = category.description;
-    //     this.form.id = category.id;
-    // },
-    // editCategory() {
-    //     this.form.patch(
-    //     this.route("admin.products.update", this.form.id, this.form),
-    //     {
-    //         preserveScroll: true,
-    //         onSuccess: () => {
-    //         Toast.fire({
-    //             icon: "info",
-    //             title: this.form.name.toUpperCase() + " Updated!",
-    //         });
-    //         this.form.reset();
-    //         },
-    //     }
-    //     );
-    // },
-    // deleteCategory(category) {
-    //     Swal.fire({
-    //         title: "Are you sure?",
-    //         text: "You won't be able to revert this!",
-    //         icon: "warning",
-    //         showCancelButton: true,
-    //         confirmButtonColor: "#3085d6",
-    //         cancelButtonColor: "#d33",
-    //         confirmButtonText: "Yes, delete it!",
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //         this.form.delete(this.route("admin.products.destroy", category), {
-    //             preserveScroll: true,
-    //             onSuccess: () => {
-    //             this.form.reset();
-    //             Swal.fire({
-    //                 title: "Deleted!",
-    //                 text: "Category deleted.",
-    //                 icon: "success",
-    //                 timer: 1500,
-    //                 showConfirmButton: false,
-    //             });
-    //             },
-    //         });
-    //         }
-    //     });
-    // },
+    editForm(product) {
+        this.editMode = true;
+        $("#modal-product").modal("show");
+        this.editedIndex = this.products.data.indexOf(product);
+        this.form.code = product.code;
+        this.form.name = product.name;
+        this.form.stock = product.stock;
+        this.form.price = product.price;
+        this.form.photo = product.photo;
+        this.form.categories = product.category;
+        this.form.description = product.description;
+        this.form.id = product.id;
+    },
+    editProduct() {
+        this.form.patch(
+            this.route("admin.products.update", this.form.id, this.form),
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                Toast.fire({
+                    icon: "info",
+                    title: this.form.name.toUpperCase() + " Updated!",
+                });
+                this.form.reset();
+                this.closeModal();
+                },
+            }
+        );
+    },
+    deleteProduct(product) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+            this.form.delete(this.route("admin.products.destroy", product), {
+                preserveScroll: true,
+                onSuccess: () => {
+                this.form.reset();
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Product " + this.form.name + " dihapus.",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
+                },
+            });
+            }
+        });
+    },
   },
 };
 </script>

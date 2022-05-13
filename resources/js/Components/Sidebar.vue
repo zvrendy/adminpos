@@ -48,7 +48,7 @@
             </inertialink>
           </li>
           <li
-            class="nav-item menu-open"
+            class="nav-item"
             :class="
               route().current('admin.admins.*') ||
               route().current('admin.users.*') ||

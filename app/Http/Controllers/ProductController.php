@@ -19,8 +19,9 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $products = Product::with('category')->paginate(5);
         return Inertia::render('Admin/Products/Index', [
-            'products' => Product::paginate(5),
+            'products' => Product::with('category')->paginate(5),
             'categories' => Category::all(),
         ]);
     }
@@ -113,7 +114,41 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        //validasi
+        $this->validate($request, [
+            // 'code' => 'required|string|max:10|unique:products',
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string|max:100',
+            'stock' => 'required|integer',
+            // 'price' => 'required|integer',
+            'categories' => 'required',
+            // 'photo' => 'nullable|image|mimes:jpg,png,jpeg'
+        ]);
+            $filename=$product->photo;
+            if ($request->hasFile('photo')) {
+                File::delete(storage_path('app/public/products/'. $product->photo));
+                //MAKA KITA SIMPAN SEMENTARA FILE TERSEBUT KEDALAM VARIABLE FILE
+                $file = $request->file('photo');
+                //KEMUDIAN NAMA FILENYA KITA BUAT CUSTOMER DENGAN PERPADUAN TIME DAN SLUG DARI NAMA PRODUK. ADAPUN EXTENSIONNYA KITA GUNAKAN BAWAAN FILE TERSEBUT
+                $filename = Str::slug($request->name) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                //SIMPAN FILENYA KEDALAM FOLDER PUBLIC/PRODUCTS, DAN PARAMETER KEDUA ADALAH NAMA CUSTOM UNTUK FILE TERSEBUT
+                $file->storeAs('public/products', $filename);
+
+                // $photo = $this->saveFile($request->name, $request->file('photo'));
+                echo $filename;
+            }
+
+            $product->update([
+                // 'code' => $request->code,
+                'name' => $request->name,
+                'description' => $request->description,
+                'stock' => $request->stock,
+                'price' => $request->price,
+                'category_id' => $request->categories['id'],
+                'photo' => $filename
+            ]);
+
+        return back();
     }
 
     /**
@@ -124,7 +159,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        File::delete(storage_path('app/public/products/'. $product->photo));
+        $product->delete();
+        return back();
     }
 
     private function saveFile($name, $photo)
