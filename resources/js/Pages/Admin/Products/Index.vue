@@ -27,6 +27,13 @@
             </ol>
           </div>
         </div>
+        <div class="row">
+            <!-- flash message -->
+            <div v-if="$page.props.flash.message" class="alert alert-success" role="alert">
+                {{ $page.props.flash.message }} test
+            </div>
+            <!-- flash message -->
+        </div>
       </div>
     </div>
     <section class="content">
@@ -217,7 +224,6 @@
                       accept="image/*"
                       id="photo"
                       class="form-control"
-                      v-on:change="onFileChange"
                       :class="{ 'is-invalid': form.errors.photo }"
                       autocomplete="off"
                     />
@@ -291,11 +297,11 @@ export default {
       editMode: false,
       form: this.$inertia.form({
         id: "",
-        code: "",
-        name: "",
-        description: "",
-        stock: "",
-        price: "",
+        code: "HP-002",
+        name: "Realme5i",
+        description: "Handphone Realme 5i",
+        stock: "12",
+        price: "2150000",
         photo: "",
         categories: [],
         preview: null,
@@ -331,6 +337,7 @@ export default {
     },
     openModal() {
       this.form.clearErrors();
+      this.editMode = false;
       this.form.reset();
       this.editedIndex = -1;
       $("#modal-product").modal("show");
@@ -355,6 +362,7 @@ export default {
       });
     },
     editForm(product) {
+        this.form.clearErrors();
         this.editMode = true;
         $("#modal-product").modal("show");
         this.editedIndex = this.products.data.indexOf(product);

@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ProductController extends Controller
 {
@@ -21,7 +22,7 @@ class ProductController extends Controller
     {
         $products = Product::with('category')->paginate(5);
         return Inertia::render('Admin/Products/Index', [
-            'products' => Product::with('category')->paginate(5),
+            'products' => Product::with('category')->orderBy('code', 'asc')->paginate(5),
             'categories' => Category::all(),
         ]);
     }
@@ -80,7 +81,7 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return back();
         }
-        return back();
+        return Redirect::route('admin.products.index')->with('message', 'Produk berhasil ditambahkan');
     }
 
     /**
@@ -115,17 +116,18 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         //validasi
-        $this->validate($request, [
-            // 'code' => 'required|string|max:10|unique:products',
-            'name' => 'required|string|max:100',
-            'description' => 'nullable|string|max:100',
-            'stock' => 'required|integer',
-            // 'price' => 'required|integer',
-            'categories' => 'required',
-            // 'photo' => 'nullable|image|mimes:jpg,png,jpeg'
-        ]);
-            $filename=$product->photo;
-            if ($request->hasFile('photo')) {
+        $filename=$product->photo;
+
+        if ($request->hasFile('photo')) {
+                $this->validate($request, [
+                    'code' => 'required|string|max:10|unique:products',
+                    'name' => 'required|string|max:100',
+                    'description' => 'nullable|string|max:100',
+                    'stock' => 'required|integer',
+                        'price' => 'required|integer',
+                    'categories' => 'required',
+                        'photo' => 'nullable|image|mimes:jpg,png,jpeg'
+                ]);
                 File::delete(storage_path('app/public/products/'. $product->photo));
                 //MAKA KITA SIMPAN SEMENTARA FILE TERSEBUT KEDALAM VARIABLE FILE
                 $file = $request->file('photo');
@@ -135,7 +137,7 @@ class ProductController extends Controller
                 $file->storeAs('public/products', $filename);
 
                 // $photo = $this->saveFile($request->name, $request->file('photo'));
-                echo $filename;
+                // echo $filename;
             }
 
             $product->update([
